@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  font-family: 'Montserrat', sans-serif;
+}
+.react-date-picker__wrapper{
+  @apply border-none;
+}
+.react-date-picker__inputGroup{
+  @apply flex justify-center gap-1 items-center font-semibold text-base py-2 rounded-xl;
+}
+.react-date-picker__inputGroup__divider{
+  @apply text-secondary;
+}
+.react-date-picker__inputGroup input::placeholder{
+  @apply text-primary;
+}
+.form-group{
+  @apply mt-5;
+}
+.form-group label {
+  @apply text-xl font-black text-primary;
+}
+.form-group input{
+  @apply mt-5 border-b border-primary block text-primary text-lg font-medium w-full pt-5 focus:outline-none focus:border-b-2;
+}
+.form-group textarea{
+  @apply mt-5 border border-primary w-full focus:outline-none focus:border-2;
+}

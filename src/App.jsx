@@ -16,6 +16,7 @@ import {
 
 function App() {
   const [texts, setTexts] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -30,9 +31,6 @@ function App() {
       quantity: Yup.number().required("Ingrese su ultimo salario mensual"),
     }),
     onSubmit: (values) => {
-      if (texts) {
-        setTexts("");
-      }
       const monthPaymenty = values.quantity;
       const dailySalary = parseFloat(monthPaymenty) / 30;
       const daysWorked = Math.ceil(
@@ -51,6 +49,7 @@ function App() {
         ...timeWorked,
       });
       setTexts(textSalary);
+      setIsTyping(true);
     },
   });
 
@@ -134,7 +133,8 @@ function App() {
               <div className="w-full text-center mt-10">
                 <button
                   type="submit"
-                  className="bg-secondary text-2xl text-white font-extrabold px-6 py-2 rounded-full hover:bg-yellow-700 focus:ring-4 focus:ring-secondary focus:ring-opacity-40"
+                  className={`btn-primary`}
+                  disabled={isTyping ? true : false}
                 >
                   CALCULAR
                 </button>

@@ -38,3 +38,6 @@ body {
 .typing-text p span {
   @apply font-extrabold tracking-wide text-2xl bg-secondary py-1 px-2 rounded-lg shadow-lg;
 }
+.btn-primary {
+  @apply bg-secondary text-2xl text-white font-extrabold px-6 py-2 rounded-full hover:bg-yellow-700 focus:ring-4 focus:ring-secondary focus:ring-opacity-40 disabled:bg-gray-400 disabled:ring-0;
+}

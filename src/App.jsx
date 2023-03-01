@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Calculator } from "./components/Calculator";
+import { CalendarDatePicker } from "./components/CalendarDatePicker";
 import { TypingEffect } from "./components/TypingEffect";
 import { LogoSVG, WhatsAppIcon } from "./icons/LogoSVG";
 import { useFormik } from "formik";
 import { BannerSection } from "./components/BannerSection";
 import { ContactForm } from "./components/ContactForm";
+import { NavigationBar } from "./components/NavigationBar";
+import * as Yup from "yup";
 import {
   convertDaysIntoYearMothDaysValue,
   constructMessage,
@@ -17,11 +19,16 @@ function App() {
 
   const formik = useFormik({
     initialValues: {
-      start_date: new Date(),
-      end_date: new Date(),
+      start_date: null,
+      end_date: null,
       quantity: "",
       types: "",
     },
+    validationSchema: Yup.object({
+      start_date: Yup.date(),
+      end_date: Yup.date(),
+      quantity: Yup.number().required("Ingrese su ultimo salario mensual"),
+    }),
     onSubmit: (values) => {
       if (texts) {
         setTexts("");
@@ -49,11 +56,7 @@ function App() {
 
   return (
     <>
-      <nav className="mt-5">
-        <div className="w-full">
-          <LogoSVG className="mx-auto" />
-        </div>
-      </nav>
+      <NavigationBar />
       <main>
         <BannerSection />
         <section
@@ -68,26 +71,32 @@ function App() {
                     <span className="text-secondary">Fecha de inicio</span>{" "}
                     <br /> de labores:
                   </p>
-                  <Calculator
+                  <CalendarDatePicker
                     name="start_date"
                     value={formik.values.start_date}
                     formikChange={(value) =>
                       formik.setFieldValue("start_date", value)
                     }
                   />
+                  <p className="mt-2 text-xs text-red-600 leading-tighter">
+                    {formik.errors.start_date ?? ""}
+                  </p>
                 </div>
                 <div>
                   <p className="text-lg font-bold text-center leading-tight mb-3 text-white">
                     <span className="text-secondary">Último día</span> <br /> de
                     labores:
                   </p>
-                  <Calculator
+                  <CalendarDatePicker
                     name="end_date"
                     value={formik.values.end_date}
                     formikChange={(value) =>
                       formik.setFieldValue("end_date", value)
                     }
                   />
+                  <p className="mt-2 text-xs text-red-600 leading-tighter">
+                    {formik.errors.end_date ?? ""}
+                  </p>
                 </div>
                 <div className="mt-3">
                   <p className="text-lg font-bold text-center leading-tight mb-3 text-white">
@@ -102,6 +111,9 @@ function App() {
                     onChange={formik.handleChange}
                     value={formik.values.quantity}
                   />
+                  <p className="mt-2 text-xs text-red-600 leading-tighter">
+                    {formik.errors.quantity ?? ""}
+                  </p>
                 </div>
                 <div className="mt-3">
                   <p className="text-lg font-bold text-center leading-tight mb-3 text-white">
@@ -128,7 +140,7 @@ function App() {
                 </button>
               </div>
             </form>
-            <div className="text-white font-light py-10">
+            <div className="typing-text text-white font-light py-10">
               {texts ? <TypingEffect texts={texts} /> : " "}
             </div>
             <div className="w-full text-center">
@@ -176,7 +188,7 @@ function App() {
           </div>
         </section>
 
-        <footer>
+        <footer id="contact">
           <div className="md:mx-auto md:max-w-screen-lg grid grid-cols-1 md:grid-cols-2 md:gap-5 items-center md:pb-10">
             <ContactForm />
             <div className="text-center pt-10 pb-16">

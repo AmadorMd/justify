@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Calculator } from "./components/Calculator";
 import { TypingEffect } from "./components/TypingEffect";
-import { LogoSVG } from "./icons/LogoSVG";
+import { LogoSVG, WhatsAppIcon } from "./icons/LogoSVG";
 import { useFormik } from "formik";
 import { BannerSection } from "./components/BannerSection";
 import { ContactForm } from "./components/ContactForm";
@@ -181,38 +181,38 @@ function App() {
             <ContactForm />
             <div className="text-center pt-10 pb-16">
               <a
-                href="tel:866-688-2488"
+                href="tel:3334444873"
                 className="text-primary text-2xl md:text-3xl font-bold"
               >
                 ó llámanos <br />
-                866-688-2488
+                33-3444-4873
               </a>
               <div className="w-full mt-5 md:mt-10">
                 <LogoSVG className="mx-auto" />
               </div>
               <p className="font-medium text-primary mt-5 md:mt-10 md:text-xl">
-                12 de Diciembre 19, <br />
-                Chapalita Sur, Zapopan, Jal. <br />
-                C.P. 45030
+                Av. Manuel Acuña 2095, <br />
+                Ladrón de Guevara, Ladron De Guevara, <br />
+                44600 Guadalajara, Jal.
               </p>
               <p className="mt-5 md:mt-10">
                 <a
-                  href="tel:3311885757"
+                  href="tel:3334444873"
                   className="leading-none text-2xl md:text-3xl font-extrabold text-primary"
                 >
-                  3311885757
-                </a>{" "}
-                <br />
-                <a
-                  href="tel:3321845588"
-                  className="leading-none text-2xl md:text-3xl font-extrabold text-primary"
-                >
-                  3321845588
+                  3334444873
                 </a>
               </p>
             </div>
           </div>
         </footer>
+        <a
+          className="fixed bg-[#25D366] bottom-0 right-0 text-white px-3 py-1 rounded-full mb-5 mr-3 inline-flex items-center"
+          href="https://api.whatsapp.com/send?phone=5213334444873&text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20asesor%C3%ADa%20online."
+        >
+          <WhatsAppIcon />
+          <span className="ml-1">Asesoria Online</span>
+        </a>
       </main>
     </>
   );

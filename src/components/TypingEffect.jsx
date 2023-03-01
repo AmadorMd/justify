@@ -10,14 +10,26 @@ export const TypingEffect = ({ texts }) => {
 
   useEffect(() => {
     if (!currentText?.length) return;
-    console.log(currentIndex);
+    if (currentIndexText === 1) {
+      setOldText((prev) => {
+        return [...prev, currentText];
+      });
+
+      setCurrentIndexText((prev) => {
+        return prev + 1 ?? prev;
+      });
+
+      setCurrentText(texts[currentIndexText]);
+      setDisplayText("");
+      setCurrentIndex(0);
+      return;
+    }
     const randomTime = Math.floor(Math.random() * 40) + 15;
 
     const intervalId = setInterval(() => {
       if (currentIndex >= currentText.length) {
         clearInterval(intervalId);
         setShowCursor(false);
-
         setOldText((prev) => {
           return [...prev, currentText];
         });
@@ -37,6 +49,7 @@ export const TypingEffect = ({ texts }) => {
         setCurrentIndex(currentText.length);
         return;
       }
+      setShowCursor(true);
       setDisplayText(currentText.slice(0, nextIndex));
       setCurrentIndex(currentIndex + 1);
     }, randomTime);

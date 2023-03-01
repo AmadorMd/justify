@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Calculator } from "./components/Calculator";
+import { CalendarDatePicker } from "./components/CalendarDatePicker";
 import { TypingEffect } from "./components/TypingEffect";
-import { LogoSVG } from "./icons/LogoSVG";
+import { LogoSVG, WhatsAppIcon } from "./icons/LogoSVG";
 import { useFormik } from "formik";
 import { BannerSection } from "./components/BannerSection";
 import { ContactForm } from "./components/ContactForm";
+import { NavigationBar } from "./components/NavigationBar";
+import * as Yup from "yup";
 import {
   convertDaysIntoYearMothDaysValue,
   constructMessage,
@@ -14,18 +16,21 @@ import {
 
 function App() {
   const [texts, setTexts] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      start_date: new Date(),
-      end_date: new Date(),
+      start_date: null,
+      end_date: null,
       quantity: "",
       types: "",
     },
+    validationSchema: Yup.object({
+      start_date: Yup.date(),
+      end_date: Yup.date(),
+      quantity: Yup.number().required("Ingrese su ultimo salario mensual"),
+    }),
     onSubmit: (values) => {
-      if (texts) {
-        setTexts("");
-      }
       const monthPaymenty = values.quantity;
       const dailySalary = parseFloat(monthPaymenty) / 30;
       const daysWorked = Math.ceil(
@@ -44,16 +49,13 @@ function App() {
         ...timeWorked,
       });
       setTexts(textSalary);
+      setIsTyping(true);
     },
   });
 
   return (
     <>
-      <nav className="mt-5">
-        <div className="w-full">
-          <LogoSVG className="mx-auto" />
-        </div>
-      </nav>
+      <NavigationBar />
       <main>
         <BannerSection />
         <section
@@ -68,26 +70,32 @@ function App() {
                     <span className="text-secondary">Fecha de inicio</span>{" "}
                     <br /> de labores:
                   </p>
-                  <Calculator
+                  <CalendarDatePicker
                     name="start_date"
                     value={formik.values.start_date}
                     formikChange={(value) =>
                       formik.setFieldValue("start_date", value)
                     }
                   />
+                  <p className="mt-2 text-xs text-red-600 leading-tighter">
+                    {formik.errors.start_date ?? ""}
+                  </p>
                 </div>
                 <div>
                   <p className="text-lg font-bold text-center leading-tight mb-3 text-white">
                     <span className="text-secondary">Último día</span> <br /> de
                     labores:
                   </p>
-                  <Calculator
+                  <CalendarDatePicker
                     name="end_date"
                     value={formik.values.end_date}
                     formikChange={(value) =>
                       formik.setFieldValue("end_date", value)
                     }
                   />
+                  <p className="mt-2 text-xs text-red-600 leading-tighter">
+                    {formik.errors.end_date ?? ""}
+                  </p>
                 </div>
                 <div className="mt-3">
                   <p className="text-lg font-bold text-center leading-tight mb-3 text-white">
@@ -102,6 +110,9 @@ function App() {
                     onChange={formik.handleChange}
                     value={formik.values.quantity}
                   />
+                  <p className="mt-2 text-xs text-red-600 leading-tighter">
+                    {formik.errors.quantity ?? ""}
+                  </p>
                 </div>
                 <div className="mt-3">
                   <p className="text-lg font-bold text-center leading-tight mb-3 text-white">
@@ -122,13 +133,14 @@ function App() {
               <div className="w-full text-center mt-10">
                 <button
                   type="submit"
-                  className="bg-secondary text-2xl text-white font-extrabold px-6 py-2 rounded-full hover:bg-yellow-700 focus:ring-4 focus:ring-secondary focus:ring-opacity-40"
+                  className={`btn-primary`}
+                  disabled={isTyping ? true : false}
                 >
                   CALCULAR
                 </button>
               </div>
             </form>
-            <div className="text-white font-light py-10">
+            <div className="typing-text text-white font-light py-10">
               {texts ? <TypingEffect texts={texts} /> : " "}
             </div>
             <div className="w-full text-center">
@@ -176,43 +188,43 @@ function App() {
           </div>
         </section>
 
-        <footer>
+        <footer id="contact">
           <div className="md:mx-auto md:max-w-screen-lg grid grid-cols-1 md:grid-cols-2 md:gap-5 items-center md:pb-10">
             <ContactForm />
             <div className="text-center pt-10 pb-16">
               <a
-                href="tel:866-688-2488"
+                href="tel:3334444873"
                 className="text-primary text-2xl md:text-3xl font-bold"
               >
                 ó llámanos <br />
-                866-688-2488
+                33-3444-4873
               </a>
               <div className="w-full mt-5 md:mt-10">
                 <LogoSVG className="mx-auto" />
               </div>
               <p className="font-medium text-primary mt-5 md:mt-10 md:text-xl">
-                12 de Diciembre 19, <br />
-                Chapalita Sur, Zapopan, Jal. <br />
-                C.P. 45030
+                Av. Manuel Acuña 2095, <br />
+                Ladrón de Guevara, Ladron De Guevara, <br />
+                44600 Guadalajara, Jal.
               </p>
               <p className="mt-5 md:mt-10">
                 <a
-                  href="tel:3311885757"
+                  href="tel:3334444873"
                   className="leading-none text-2xl md:text-3xl font-extrabold text-primary"
                 >
-                  3311885757
-                </a>{" "}
-                <br />
-                <a
-                  href="tel:3321845588"
-                  className="leading-none text-2xl md:text-3xl font-extrabold text-primary"
-                >
-                  3321845588
+                  3334444873
                 </a>
               </p>
             </div>
           </div>
         </footer>
+        <a
+          className="fixed bg-[#25D366] bottom-0 right-0 text-white px-3 py-1 rounded-full mb-5 mr-3 inline-flex items-center"
+          href="https://api.whatsapp.com/send?phone=5213334444873&text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20asesor%C3%ADa%20online."
+        >
+          <WhatsAppIcon />
+          <span className="ml-1">Asesoria Online</span>
+        </a>
       </main>
     </>
   );
